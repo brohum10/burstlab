@@ -1,0 +1,13 @@
+{
+  "name": "burstlab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "evidence": "node scripts/evidence.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
