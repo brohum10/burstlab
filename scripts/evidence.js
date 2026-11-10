@@ -23,7 +23,11 @@ const compact = {
     },
   },
 };
-writeFileSync(new URL('../evidence/default.json', import.meta.url), `${JSON.stringify(compact, null, 2)}\n`);
+// Tiny floating-point differences across operating systems should not change the checked-in evidence.
+const stableNumber = (_key, value) => typeof value === 'number'
+  ? Math.round(value * 1e9) / 1e9
+  : value;
+writeFileSync(new URL('../evidence/default.json', import.meta.url), `${JSON.stringify(compact, stableNumber, 2)}\n`);
 console.log(JSON.stringify({
   trialCount: result.config.trials,
   averageTicketsPerTrial: result.comparison.averageTicketsPerTrial,
