@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b27">
+  <meta name="description" content="An interactive, reproducible support-capacity simulation that makes ticket priority trade-offs visible.">
+  <title>BurstLab · Rehearse the queue</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="src/style.css">
+  <script type="module" src="src/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="page">
+    <header class="site-header">
+      <a class="brand" href="./"><span class="brand-icon" aria-hidden="true">B<span>↗</span></span> burstlab<span class="brand-dot">.</span></a>
+      <nav aria-label="Main navigation"><a href="#lab">The lab</a><a href="#method">Method</a><a href="https://github.com/brohum10/burstlab">GitHub ↗</a></nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="pulse" aria-hidden="true"></span> CAPACITY REHEARSAL / SYNTHETIC TRAFFIC</p>
+          <h1 id="hero-title">What happens when <em>the queue gets loud?</em></h1>
+          <p class="hero-lede">Try a traffic burst before it happens. Compare first-in-first-out with urgent-first dispatch on the <strong>same tickets</strong>, then see who gets helped and who waits longer.</p>
+          <div class="hero-actions"><a class="primary-link" href="#lab">Run the scenario <span aria-hidden="true">↓</span></a><a class="quiet-link" href="https://github.com/brohum10/burstlab#how-it-works">Inspect the model ↗</a></div>
+          <div class="hero-stats" aria-label="Project facts"><span><strong>30</strong> paired trials</span><span><strong>0</strong> external APIs</span><span><strong>100%</strong> synthetic data</span></div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="visual-top"><span>LIVE REHEARSAL</span><span class="visual-dot"></span></div>
+          <div class="signal"><span class="signal-label">Incoming tickets</span><span class="signal-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+          <div class="visual-flow"><div class="flow-node"><small>WORKLOAD</small><strong>Same arrivals</strong><span>+ service times</span></div><div class="flow-branch"><span></span><span></span></div><div class="flow-options"><div><b>01</b> FIFO</div><div><b>02</b> Urgent first</div></div></div>
+          <div class="visual-bottom"><span>Not a forecast.</span><span>A decision rehearsal.</span></div>
+        </div>
+      </section>
+
+      <section class="lab" id="lab" aria-labelledby="lab-title">
+        <div class="section-intro"><div><p class="eyebrow">THE INTERACTIVE LAB</p><h2 id="lab-title">Turn the pressure up.</h2></div><p>Change the staffing or burst. The same seeded workload is replayed under both policies in every trial.</p></div>
+        <div class="lab-grid">
+          <aside class="controls" aria-labelledby="controls-title">
+            <div class="controls-head"><div><span class="panel-kicker">01 / INPUTS</span><h3 id="controls-title">Scenario controls</h3></div><span class="local-tag">LOCAL ONLY</span></div>
+            <div class="control"><div class="control-line"><label for="agents">Available agents</label><output id="agents-value" for="agents">4</output></div><input id="agents" type="range" min="2" max="8" step="1" value="4"><div class="range-labels"><span>2 agents</span><span>8 agents</span></div></div>
+            <div class="control"><div class="control-line"><label for="peak">Peak arrival multiplier</label><output id="peak-value" for="peak">3.0×</output></div><input id="peak" type="range" min="1" max="4" step="0.25" value="3"><div class="range-labels"><span>1× baseline</span><span>4× baseline</span></div></div>
+            <div class="control"><div class="control-line"><label for="urgent-share">Urgent ticket share</label><output id="urgent-value" for="urgent-share">25%</output></div><input id="urgent-share" type="range" min="10" max="50" step="5" value="25"><div class="range-labels"><span>10%</span><span>50%</span></div></div>
+            <div class="seed-line"><span>Seed <strong>20261110</strong></span><span>240-minute arrival window</span></div>
+            <div class="control-actions"><button id="reset" type="button">Reset scenario</button><button id="download" type="button">Download JSON ↗</button></div>
+          </aside>
+
+          <div class="results" aria-labelledby="result-title">
+            <div class="results-head"><div><span class="panel-kicker">02 / PAIRED COMPARISON</span><h3 id="result-title">The trade-off</h3></div><p id="status" role="status" aria-live="polite">Calculating 30 paired trials…</p></div>
+            <div class="metric-grid">
+              <article class="metric-card mint"><p>Urgent deadline misses</p><strong id="urgent-delta">—</strong><span id="urgent-interval">Across 30 paired synthetic trials</span><small>Urgent-first compared with FIFO · 10-minute wait target</small></article>
+              <article class="metric-card amber"><p>Routine mean wait</p><strong id="routine-delta">—</strong><span id="routine-interval">Across 30 paired synthetic trials</span><small>Urgent-first compared with FIFO · cost of prioritization</small></article>
+            </div>
+            <p class="interval-note">Ranges are percentile bootstrap intervals across generated trial differences. They describe this simulation’s variability, not confidence about a real support center.</p>
+            <div class="chart-panel"><div class="chart-head"><div><span class="panel-kicker">FIRST TRIAL / QUEUE DEPTH</span><h4>Waiting tickets over time</h4></div><div class="legend"><span><i class="line-fifo"></i> FIFO</span><span><i class="line-priority"></i> Urgent first</span></div></div><div id="chart" class="chart" role="img" aria-label="Waiting ticket comparison chart"></div><div class="chart-axis"><span>0 min</span><span>Peak window: 72–132 min</span><span>240 min</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="details" aria-labelledby="detail-title"><div class="section-intro"><div><p class="eyebrow">LOOK CLOSER</p><h2 id="detail-title">The first trial, side by side.</h2></div><p>The chart and table show one seeded trial. The headline ranges above use 30 generated trials.</p></div><p class="table-hint">Swipe the table sideways to compare both policies →</p><div class="table-wrap" tabindex="0" role="region" aria-label="First-trial policy comparison table"><table><caption>First trial under identical generated arrivals and service times</caption><thead><tr><th scope="col">Measure</th><th scope="col">FIFO</th><th scope="col">Urgent first</th></tr></thead><tbody><tr><th scope="row">Tickets served</th><td id="count-fifo">—</td><td id="count-priority">—</td></tr><tr><th scope="row">Urgent wait-target misses</th><td id="urgent-fifo">—</td><td id="urgent-priority">—</td></tr><tr><th scope="row">Routine 90th-percentile wait</th><td id="routine-fifo">—</td><td id="routine-priority">—</td></tr><tr><th scope="row">Largest waiting queue</th><td id="queue-fifo">—</td><td id="queue-priority">—</td></tr><tr><th scope="row">Minutes to drain after arrivals stop</th><td id="drain-fifo">—</td><td id="drain-priority">—</td></tr></tbody></table></div></section>
+
+      <section class="method" id="method" aria-labelledby="method-title"><div><p class="eyebrow">HOW IT WORKS</p><h2 id="method-title">A fairer comparison starts with the same workload.</h2><p>The simulator creates ticket arrivals, priorities, and service times once per trial. A min-heap processes arrivals and completions; another chooses the next waiting ticket by policy. Agents finish their current ticket before choosing another.</p><a class="quiet-link" href="https://github.com/brohum10/burstlab/blob/main/src/sim.js">Read the event loop ↗</a></div><ol><li><span>01</span><div><strong>Generate a burst</strong><p>Fixed-seed arrivals over four hours, with a 60-minute peak window.</p></div></li><li><span>02</span><div><strong>Replay both policies</strong><p>Same tickets and service times; only dispatch order changes.</p></div></li><li><span>03</span><div><strong>Keep the trade-off visible</strong><p>Urgent misses, routine waits, backlog, and drain time are all reported.</p></div></li><li><span>04</span><div><strong>Repeat and inspect</strong><p>Thirty paired synthetic trials, bootstrap ranges, source code, tests, and saved evidence.</p></div></li></ol></section>
+      <div class="boundary"><strong>Read this before using the numbers.</strong><p>This is an educational capacity rehearsal, not a staffing recommendation or a forecast. Arrivals and service times are generated, agents are interchangeable, work is not preempted, the waiting room is unlimited, and the model omits breaks, shifts, skills, outages, and customer behavior. Test assumptions with real data before acting.</p></div>
+    </main>
+    <footer><span>burstlab. · Built for transparent trade-offs.</span><div><a href="https://github.com/brohum10/burstlab">Source & tests ↗</a><a href="https://github.com/brohum10/burstlab/blob/main/evidence/default.json">Default evidence ↗</a></div></footer>
+  </div>
+</body>
+</html>
